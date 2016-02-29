@@ -341,23 +341,42 @@ if ( !class_exists( 'toc' ) ) :
 		
 		function shortcode_sitemap_pages( $atts )
 		{
+			global $post;
+			$html='';  // allways init vars
 			extract( shortcode_atts( array(
 				'heading' => $this->options['sitemap_heading_type'],
 				'label' => htmlentities( $this->options['sitemap_pages'], ENT_COMPAT, 'UTF-8' ),
 				'no_label' => false,
 				'exclude' => '',
-				'exclude_tree' => ''
+				'exclude_tree' => '',
+				'child_of' => $this->options['child_of']
 				), $atts )
 			);
 
-			if ( $heading < 1 || $heading > 6 )		// h1 to h6 are valid
+			if ( $heading < 1 || $heading > 6 ) {
+				// h1 to h6 are valid
 				$heading = $this->options['sitemap_heading_type'];
+			}
 
+			// -- [ sitemap_pages child_of="current" ]
+			if ( $child_of == "current" ) {
+				$child_of = $post->ID;
+			} else if ( is_numeric($child_of) ) {
+				// -- [ sitemap_pages child_of="1234" ]
+			} else {
+				$child_of = 0;
+			}
+			
+			// -- debugging
+			//$html.='<!-- d: child_of:   ' . $child_of . ' -->' . "\n";    // true
+			//$html.='<!-- d: current ID: ' . $post->ID . ' -->' . "\n";  // 2311
+            		//$html.="\n";
+			
 			$html = '<div class="toc_sitemap">';
 			if ( !$no_label ) $html .= '<h' . $heading . ' class="toc_sitemap_pages">' . $label . '</h' . $heading . '>';
 			$html .=
 					'<ul class="toc_sitemap_pages_list">' .
-						wp_list_pages( array('title_li' => '', 'echo' => false, 'exclude' => $exclude, 'exclude_tree' => $exclude_tree ) ) .
+						wp_list_pages( array('title_li' => '', 'echo' => false, 'exclude' => $exclude, 'exclude_tree' => $exclude_tree, 'child_of' => $child_of ) ) .
 					'</ul>' .
 				'</div>'
 			;

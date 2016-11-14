@@ -341,6 +341,8 @@ if ( !class_exists( 'toc' ) ) :
 		
 		function shortcode_sitemap_pages( $atts )
 		{
+			// -- added [ sitemap_pages child_of="current" ]
+			// -- added [ sitemap_pages child_of="1234" ]
 			global $post;
 			$html='';  // allways init vars 
 			extract( shortcode_atts( array(

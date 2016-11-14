@@ -342,7 +342,7 @@ if ( !class_exists( 'toc' ) ) :
 		function shortcode_sitemap_pages( $atts )
 		{
 			global $post;
-			$html='';  // allways init vars
+			$html='';  // allways init vars 
 			extract( shortcode_atts( array(
 				'heading' => $this->options['sitemap_heading_type'],
 				'label' => htmlentities( $this->options['sitemap_pages'], ENT_COMPAT, 'UTF-8' ),
